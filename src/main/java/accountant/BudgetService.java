@@ -41,13 +41,16 @@ public class BudgetService {
                     Budget budget = currentBudget.get();
 
                     if (YearMonth.from(currentDate).equals(YearMonth.from(start))) {
-                        totalAmount += budget.dailyAmount() * dayCount(start, budget.lastDay());
+                        long dayCount = dayCount(start, budget.lastDay());
+                        totalAmount += budget.dailyAmount() * dayCount;
                     }
                     else if (YearMonth.from(currentDate).equals(YearMonth.from(end))) {
-                        totalAmount += budget.dailyAmount() * dayCount(budget.firstDay(), end);
+                        long dayCount = dayCount(budget.firstDay(), end);
+                        totalAmount += budget.dailyAmount() * dayCount;
                     }
                     else {
-                        totalAmount += budget.dailyAmount() * dayCount(budget.firstDay(), budget.lastDay());
+                        long dayCount = dayCount(budget.firstDay(), budget.lastDay());
+                        totalAmount += budget.dailyAmount() * dayCount;
                     }
                 }
                 currentDate = currentDate.plusMonths(1);
