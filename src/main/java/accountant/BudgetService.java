@@ -36,9 +36,9 @@ public class BudgetService {
             LocalDate currentDate = start;
             while (currentDate.isBefore(YearMonth.from(end).atDay(1).plusMonths(1))) {
 
+                Optional<Budget> currentBudget = getBudget(currentDate);
                 if (YearMonth.from(currentDate).equals(YearMonth.from(start))) {
 
-                    Optional<Budget> currentBudget = getBudget(currentDate);
                     double firstMonthAmount = 0;
                     if (currentBudget.isPresent()) {
                         Budget firstBudget = currentBudget.get();
@@ -49,7 +49,6 @@ public class BudgetService {
                 }
                 else if (YearMonth.from(currentDate).equals(YearMonth.from(end))) {
 
-                    Optional<Budget> currentBudget = getBudget(currentDate);
                     double lastMonthAmount = 0;
                     if (currentBudget.isPresent()) {
                         Budget lastBudget = currentBudget.get();
@@ -60,7 +59,6 @@ public class BudgetService {
                 }
                 else {
 
-                    Optional<Budget> currentBudget = getBudget(currentDate);
                     if (currentBudget.isPresent()) {
 
                         Budget budget = currentBudget.get();
