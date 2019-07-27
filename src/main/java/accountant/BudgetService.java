@@ -5,9 +5,7 @@ import accountant.vo.Budget;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class BudgetService {
     private BudgetRepo budgetRepo;
@@ -25,7 +23,7 @@ public class BudgetService {
             Optional<Budget> budget = getBudget(start);
 
             if (budget.isPresent()) {
-                return dailyAmount(budget);
+                return dailyAmount(budget.get());
             }
 
             return 0;
@@ -58,8 +56,8 @@ public class BudgetService {
         return 0D;
     }
 
-    private double dailyAmount(Optional<Budget> budget) {
-        return budget.get().getAmount() / budget.get().dayCount();
+    private double dailyAmount(Budget budget) {
+        return budget.getAmount() / budget.dayCount();
     }
 
     private int diffDay(LocalDate start, LocalDate end) {
