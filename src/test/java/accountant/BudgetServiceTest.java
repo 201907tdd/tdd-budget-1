@@ -11,7 +11,6 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
-
 public class BudgetServiceTest {
     private BudgetRepo budgetRepo = mock(BudgetRepo.class);
     private final BudgetService service = new BudgetService(budgetRepo);
@@ -25,10 +24,6 @@ public class BudgetServiceTest {
         doReturn(Collections.singletonList(budget)).when(budgetRepo).getAll();
 
         budgetShouldBe(start, end, 3100);
-    }
-
-    private void budgetShouldBe(LocalDate start, LocalDate end, int expected) {
-        assertEquals(expected, service.query(start, end), 0.001);
     }
 
     @Test
@@ -110,5 +105,31 @@ public class BudgetServiceTest {
         doReturn(Arrays.asList(budget, budget1)).when(budgetRepo).getAll();
 
         budgetShouldBe(start, end, 320);
+    }
+
+    @Test
+    public void period_without_overlapping_before_budget() {
+        LocalDate start = LocalDate.of(2018, 12, 31);
+        LocalDate end = LocalDate.of(2019, 2, 1);
+
+        Budget budget = new Budget("201903", 310);
+        doReturn(Arrays.asList(budget)).when(budgetRepo).getAll();
+
+        budgetShouldBe(start, end, 0);
+    }
+
+    @Test
+    public void period_without_overlapping_after_budget() {
+        LocalDate start = LocalDate.of(2019, 10, 30);
+        LocalDate end = LocalDate.of(2019, 10, 31);
+
+        Budget budget = new Budget("201903", 310);
+        doReturn(Arrays.asList(budget)).when(budgetRepo).getAll();
+
+        budgetShouldBe(start, end, 0);
+    }
+
+    private void budgetShouldBe(LocalDate start, LocalDate end, int expected) {
+        assertEquals(expected, service.query(start, end), 0.001);
     }
 }
