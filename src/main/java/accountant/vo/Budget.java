@@ -27,8 +27,8 @@ public class Budget {
         return month.lengthOfMonth();
     }
 
-    private YearMonth getMonth() {
-        return YearMonth.parse(this.yearMonth, ofPattern("uuuuMM"));
+    public LocalDate firstDay() {
+        return getMonth().atDay(1);
     }
 
     public double dailyAmount() {
@@ -37,5 +37,9 @@ public class Budget {
 
     public LocalDate lastDay() {
         return getMonth().atEndOfMonth();
+    }
+
+    private YearMonth getMonth() {
+        return YearMonth.parse(this.yearMonth, ofPattern("uuuuMM"));
     }
 }

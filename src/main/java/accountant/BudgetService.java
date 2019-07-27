@@ -43,7 +43,15 @@ public class BudgetService {
 
             totalAmount += firstMonthAmount;
 
-            double lastMonthAmount = calculateBudgetAverage(end) * (end.getDayOfMonth());
+            Optional<Budget> budgetOfEnd = getBudget(end);
+            double lastMonthAmount = 0;
+            if (budgetOfEnd.isPresent()) {
+                Budget lastBudget = budgetOfEnd.get();
+                lastMonthAmount = lastBudget.dailyAmount() * dayCount(lastBudget.firstDay(), end);
+//                lastMonthAmount = endBudgetDailyAmount * (end.getDayOfMonth());
+            }
+
+//            double endBudgetDailyAmount = calculateBudgetAverage(end);
             totalAmount += lastMonthAmount;
 
             for (int i = 1; i < diffMonth; i++) {
