@@ -31,18 +31,18 @@ public class Period {
     public long getOverlappingDays(Budget budget) {
         LocalDate overlappingStart = start.isAfter(budget.firstDay()) ? start : budget.firstDay();
 
-        LocalDate overlappingEnd;
+        LocalDate overlappingEnd = end.isBefore(budget.lastDay()) ? end : budget.lastDay();
         if (YearMonth.from(budget.firstDay()).equals(YearMonth.from(getStart()))) {
 //            overlappingStart = getStart();
-            overlappingEnd = budget.lastDay();
+//            overlappingEnd = budget.lastDay();
         }
         else if (YearMonth.from(budget.lastDay()).equals(YearMonth.from(getEnd()))) {
 //            overlappingStart = budget.firstDay();
-            overlappingEnd = getEnd();
+//            overlappingEnd = getEnd();
         }
         else {
 //            overlappingStart = budget.firstDay();
-            overlappingEnd = budget.lastDay();
+//            overlappingEnd = budget.lastDay();
         }
         return dayCount(overlappingStart, overlappingEnd);
     }
