@@ -29,29 +29,11 @@ public class BudgetService {
             if (currentBudget.isPresent()) {
                 Budget budget = currentBudget.get();
 
-                totalAmount += budget.dailyAmount() * period.getOverlappingDays(budget.getPeriod());
+                totalAmount += budget.getOverlappingAmount(period);
             }
             currentDate = currentDate.plusMonths(1);
         }
         return totalAmount;
-    }
-
-    private double calculateBudgetAverage(LocalDate start) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMM");
-        for (Budget budget : this.budgetRepo.getAll()) {
-            if (budget.getYearMonth().equals(start.format(formatter))) {
-                return budget.getAmount() / start.lengthOfMonth();
-            }
-        }
-        return 0D;
-    }
-
-    private int diffMonth(LocalDate start, LocalDate end) {
-        if (start.getYear() == end.getYear()) {
-            return Math.abs(start.getMonth().getValue() - end.getMonth().getValue());
-        }
-        YearMonth from = YearMonth.from(start);
-        return YearMonth.from(end).minusMonths(from.getMonthValue()).getMonthValue();
     }
 
     private Optional<Budget> getBudget(LocalDate currentDate) {
