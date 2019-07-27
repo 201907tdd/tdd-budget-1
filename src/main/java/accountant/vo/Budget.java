@@ -24,32 +24,31 @@ public class Budget {
         return amount;
     }
 
-    public int dayCount() {
-        YearMonth month = getMonth();
-        return month.lengthOfMonth();
-    }
-
-    public LocalDate firstDay() {
-        return getMonth().atDay(1);
-    }
-
-    public double dailyAmount() {
-        return amount / dayCount();
-    }
-
-    public LocalDate lastDay() {
-        return getMonth().atEndOfMonth();
-    }
-
-    public Period getPeriod() {
-        return new Period(firstDay(), lastDay());
-    }
-
     public double getOverlappingAmount(Period period) {
         return dailyAmount() * period.getOverlappingDays(getPeriod());
     }
 
+    private double dailyAmount() {
+        return amount / dayCount();
+    }
+
+    private int dayCount() {
+        return getMonth().lengthOfMonth();
+    }
+
+    private LocalDate firstDay() {
+        return getMonth().atDay(1);
+    }
+
     private YearMonth getMonth() {
         return YearMonth.parse(this.yearMonth, ofPattern("uuuuMM"));
+    }
+
+    private Period getPeriod() {
+        return new Period(firstDay(), lastDay());
+    }
+
+    private LocalDate lastDay() {
+        return getMonth().atEndOfMonth();
     }
 }
