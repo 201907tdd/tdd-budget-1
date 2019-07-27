@@ -13,18 +13,6 @@ public class Period {
         this.end = end;
     }
 
-    static long dayCount(LocalDate start, LocalDate end) {
-        return DAYS.between(start, end) + 1;
-    }
-
-    public LocalDate getStart() {
-        return start;
-    }
-
-    public LocalDate getEnd() {
-        return end;
-    }
-
     public long getOverlappingDays(Period another) {
 
         if (hasNoOverlapping(another)) {
@@ -35,6 +23,10 @@ public class Period {
         LocalDate overlappingEnd = end.isBefore(another.end) ? end : another.end;
 
         return dayCount(overlappingStart, overlappingEnd);
+    }
+
+    private long dayCount(LocalDate start, LocalDate end) {
+        return DAYS.between(start, end) + 1;
     }
 
     private boolean hasNoOverlapping(Period another) {
