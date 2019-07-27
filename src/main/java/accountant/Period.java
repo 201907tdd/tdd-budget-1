@@ -1,9 +1,6 @@
 package accountant;
 
-import accountant.vo.Budget;
-
 import java.time.LocalDate;
-import java.time.YearMonth;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -28,8 +25,7 @@ public class Period {
         return end;
     }
 
-    public long getOverlappingDays(Budget budget) {
-        Period another = new Period(budget.firstDay(), budget.lastDay());
+    public long getOverlappingDays(Period another) {
 
         LocalDate overlappingStart = start.isAfter(another.start) ? start : another.start;
         LocalDate overlappingEnd = end.isBefore(another.end) ? end : another.end;

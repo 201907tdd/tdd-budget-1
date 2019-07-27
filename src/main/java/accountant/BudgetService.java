@@ -37,7 +37,7 @@ public class BudgetService {
                 if (currentBudget.isPresent()) {
                     Budget budget = currentBudget.get();
 
-                    totalAmount += budget.dailyAmount() * new Period(start, end).getOverlappingDays(budget);
+                    totalAmount += budget.dailyAmount() * new Period(start, end).getOverlappingDays(new Period(budget.firstDay(), budget.lastDay()));
                 }
                 currentDate = currentDate.plusMonths(1);
             }
