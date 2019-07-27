@@ -37,34 +37,57 @@ public class BudgetService {
             while (currentDate.isBefore(YearMonth.from(end).atDay(1).plusMonths(1))) {
 
                 Optional<Budget> currentBudget = getBudget(currentDate);
-                if (YearMonth.from(currentDate).equals(YearMonth.from(start))) {
+                if (currentBudget.isPresent()) {
 
-                    double firstMonthAmount = 0;
-                    if (currentBudget.isPresent()) {
-                        Budget firstBudget = currentBudget.get();
-                        firstMonthAmount = firstBudget.dailyAmount() * dayCount(start, firstBudget.lastDay());
+                    Budget budget = currentBudget.get();
+                    if (YearMonth.from(currentDate).equals(YearMonth.from(start))) {
+
+                        double firstMonthAmount = budget.dailyAmount() * dayCount(start, budget.lastDay());
+
+                        totalAmount += firstMonthAmount;
                     }
+                    else if (YearMonth.from(currentDate).equals(YearMonth.from(end))) {
 
-                    totalAmount += firstMonthAmount;
-                }
-                else if (YearMonth.from(currentDate).equals(YearMonth.from(end))) {
+                        double lastMonthAmount = budget.dailyAmount() * dayCount(budget.firstDay(), end);
 
-                    double lastMonthAmount = 0;
-                    if (currentBudget.isPresent()) {
-                        Budget lastBudget = currentBudget.get();
-                        lastMonthAmount = lastBudget.dailyAmount() * dayCount(lastBudget.firstDay(), end);
+                        totalAmount += lastMonthAmount;
                     }
+                    else {
 
-                    totalAmount += lastMonthAmount;
-                }
-                else {
+                        if (currentBudget.isPresent()) {
 
-                    if (currentBudget.isPresent()) {
-
-                        Budget budget = currentBudget.get();
-                        totalAmount += budget.dailyAmount() * dayCount(budget.firstDay(), budget.lastDay());
+                            totalAmount += budget.dailyAmount() * dayCount(budget.firstDay(), budget.lastDay());
+                        }
                     }
                 }
+//                if (YearMonth.from(currentDate).equals(YearMonth.from(start))) {
+//
+//                    double firstMonthAmount = 0;
+//                    if (currentBudget.isPresent()) {
+////                        Budget budget = currentBudget.get();
+//                        firstMonthAmount = budget.dailyAmount() * dayCount(start, budget.lastDay());
+//                    }
+//
+//                    totalAmount += firstMonthAmount;
+//                }
+//                else if (YearMonth.from(currentDate).equals(YearMonth.from(end))) {
+//
+//                    double lastMonthAmount = 0;
+//                    if (currentBudget.isPresent()) {
+////                        Budget budget = currentBudget.get();
+//                        lastMonthAmount = budget.dailyAmount() * dayCount(budget.firstDay(), end);
+//                    }
+//
+//                    totalAmount += lastMonthAmount;
+//                }
+//                else {
+//
+//                    if (currentBudget.isPresent()) {
+//
+////                        Budget budget = currentBudget.get();
+//                        totalAmount += budget.dailyAmount() * dayCount(budget.firstDay(), budget.lastDay());
+//                    }
+//                }
                 currentDate = currentDate.plusMonths(1);
             }
         }
