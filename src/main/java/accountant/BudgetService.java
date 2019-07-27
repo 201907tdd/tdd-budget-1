@@ -23,16 +23,19 @@ public class BudgetService {
 
         Period period = new Period(start, end);
         LocalDate currentDate = start;
-        while (currentDate.isBefore(YearMonth.from(end).atDay(1).plusMonths(1))) {
+//        while (currentDate.isBefore(YearMonth.from(end).atDay(1).plusMonths(1))) {
+//
+//            Optional<Budget> currentBudget = getBudget(currentDate);
+//            if (currentBudget.isPresent()) {
+//                Budget budget = currentBudget.get();
+//
+        for (Budget budget : budgetRepo.getAll()) {
 
-            Optional<Budget> currentBudget = getBudget(currentDate);
-            if (currentBudget.isPresent()) {
-                Budget budget = currentBudget.get();
-
-                totalAmount += budget.getOverlappingAmount(period);
-            }
-            currentDate = currentDate.plusMonths(1);
+            totalAmount += budget.getOverlappingAmount(period);
         }
+//            }
+//            currentDate = currentDate.plusMonths(1);
+//        }
         return totalAmount;
     }
 
