@@ -20,11 +20,10 @@ public class BudgetService {
         }
 
         Period period = new Period(start, end);
-        double totalAmount = 0;
-        for (Budget budget : budgetRepo.getAll()) {
-
-            totalAmount += budget.getOverlappingAmount(period);
-        }
-        return totalAmount;
+        return budgetRepo
+                .getAll()
+                .stream()
+                .mapToDouble(budget -> budget.getOverlappingAmount(period))
+                .sum();
     }
 }
