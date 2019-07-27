@@ -1,8 +1,6 @@
 package accountant.vo;
 
-import java.time.Year;
 import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
 
 import static java.time.format.DateTimeFormatter.ofPattern;
 
@@ -26,5 +24,9 @@ public class Budget {
     public int dayCount() {
         YearMonth month = YearMonth.parse(this.yearMonth, ofPattern("uuuuMM"));
         return month.lengthOfMonth();
+    }
+
+    public double dailyAmount() {
+        return amount / dayCount();
     }
 }

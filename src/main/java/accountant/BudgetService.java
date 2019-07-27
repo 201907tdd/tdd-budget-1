@@ -23,7 +23,7 @@ public class BudgetService {
             Optional<Budget> budget = getBudget(start);
 
             if (budget.isPresent()) {
-                return dailyAmount(budget.get());
+                return budget.get().dailyAmount();
             }
 
             return 0;
@@ -54,10 +54,6 @@ public class BudgetService {
             }
         }
         return 0D;
-    }
-
-    private double dailyAmount(Budget budget) {
-        return budget.getAmount() / budget.dayCount();
     }
 
     private int diffDay(LocalDate start, LocalDate end) {
