@@ -30,7 +30,13 @@ public class BudgetService {
         }
 
         if (diffMonth(start, end) == 0) {
-            return calculateBudgetAverage(start) * diffDay(start, end);
+
+            Optional<Budget> budget = getBudget(start);
+
+            if (budget.isPresent()) {
+                return budget.get().dailyAmount() * diffDay(start, end);
+            }
+            return 0;
         }
 
         int diffMonth = diffMonth(start, end);
