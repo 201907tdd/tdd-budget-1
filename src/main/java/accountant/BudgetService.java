@@ -20,16 +20,8 @@ public class BudgetService {
         }
 
         double totalAmount = 0;
-//        if (diffMonth(start, end) == 0) {
-//
-//            Optional<Budget> budget = getBudget(start);
-//
-//            if (budget.isPresent()) {
-//                return budget.get().dailyAmount() * Period.dayCount(start, end);
-//            }
-//        }
-//        else {
 
+        Period period = new Period(start, end);
         LocalDate currentDate = start;
         while (currentDate.isBefore(YearMonth.from(end).atDay(1).plusMonths(1))) {
 
@@ -37,11 +29,10 @@ public class BudgetService {
             if (currentBudget.isPresent()) {
                 Budget budget = currentBudget.get();
 
-                totalAmount += budget.dailyAmount() * new Period(start, end).getOverlappingDays(budget.getPeriod());
+                totalAmount += budget.dailyAmount() * period.getOverlappingDays(budget.getPeriod());
             }
             currentDate = currentDate.plusMonths(1);
         }
-//        }
         return totalAmount;
     }
 
