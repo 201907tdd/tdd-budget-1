@@ -31,22 +31,19 @@ public class BudgetService {
             }
         }
         else {
-
             int diffMonth = diffMonth(start, end);
 
-            if (diffMonth > 0) {
-                double firstMonthAmount = calculateBudgetAverage(start) * (start.lengthOfMonth() - start.getDayOfMonth() + 1);
-                totalAmount += firstMonthAmount;
+            double firstMonthAmount = calculateBudgetAverage(start) * (start.lengthOfMonth() - start.getDayOfMonth() + 1);
+            totalAmount += firstMonthAmount;
 
-                double lastMonthAmount = calculateBudgetAverage(end) * (end.getDayOfMonth());
-                totalAmount += lastMonthAmount;
+            double lastMonthAmount = calculateBudgetAverage(end) * (end.getDayOfMonth());
+            totalAmount += lastMonthAmount;
 
-                for (int i = 1; i < diffMonth; i++) {
-                    LocalDate middle = start.plusMonths(i);
-                    totalAmount += calculateBudgetAverage(middle) * middle.lengthOfMonth();
-                }
-                return totalAmount;
+            for (int i = 1; i < diffMonth; i++) {
+                LocalDate middle = start.plusMonths(i);
+                totalAmount += calculateBudgetAverage(middle) * middle.lengthOfMonth();
             }
+            return totalAmount;
         }
         return 0;
     }
