@@ -43,9 +43,8 @@ public class BudgetService {
                 LocalDate middle = start.plusMonths(i);
                 totalAmount += calculateBudgetAverage(middle) * middle.lengthOfMonth();
             }
-            return totalAmount;
         }
-        return 0;
+        return totalAmount;
     }
 
     private double calculateBudgetAverage(LocalDate start) {
