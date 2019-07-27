@@ -38,56 +38,18 @@ public class BudgetService {
 
                 Optional<Budget> currentBudget = getBudget(currentDate);
                 if (currentBudget.isPresent()) {
-
                     Budget budget = currentBudget.get();
+
                     if (YearMonth.from(currentDate).equals(YearMonth.from(start))) {
-
-                        double firstMonthAmount = budget.dailyAmount() * dayCount(start, budget.lastDay());
-
-                        totalAmount += firstMonthAmount;
+                        totalAmount += budget.dailyAmount() * dayCount(start, budget.lastDay());
                     }
                     else if (YearMonth.from(currentDate).equals(YearMonth.from(end))) {
-
-                        double lastMonthAmount = budget.dailyAmount() * dayCount(budget.firstDay(), end);
-
-                        totalAmount += lastMonthAmount;
+                        totalAmount += budget.dailyAmount() * dayCount(budget.firstDay(), end);
                     }
                     else {
-
-                        if (currentBudget.isPresent()) {
-
-                            totalAmount += budget.dailyAmount() * dayCount(budget.firstDay(), budget.lastDay());
-                        }
+                        totalAmount += budget.dailyAmount() * dayCount(budget.firstDay(), budget.lastDay());
                     }
                 }
-//                if (YearMonth.from(currentDate).equals(YearMonth.from(start))) {
-//
-//                    double firstMonthAmount = 0;
-//                    if (currentBudget.isPresent()) {
-////                        Budget budget = currentBudget.get();
-//                        firstMonthAmount = budget.dailyAmount() * dayCount(start, budget.lastDay());
-//                    }
-//
-//                    totalAmount += firstMonthAmount;
-//                }
-//                else if (YearMonth.from(currentDate).equals(YearMonth.from(end))) {
-//
-//                    double lastMonthAmount = 0;
-//                    if (currentBudget.isPresent()) {
-////                        Budget budget = currentBudget.get();
-//                        lastMonthAmount = budget.dailyAmount() * dayCount(budget.firstDay(), end);
-//                    }
-//
-//                    totalAmount += lastMonthAmount;
-//                }
-//                else {
-//
-//                    if (currentBudget.isPresent()) {
-//
-////                        Budget budget = currentBudget.get();
-//                        totalAmount += budget.dailyAmount() * dayCount(budget.firstDay(), budget.lastDay());
-//                    }
-//                }
                 currentDate = currentDate.plusMonths(1);
             }
         }
