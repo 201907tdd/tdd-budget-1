@@ -22,10 +22,7 @@ public class BudgetService {
         }
 
         if (start.isEqual(end)) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMM");
-            Optional<Budget> budget = budgetRepo.getAll()
-                    .stream()
-                    .filter(b -> b.getYearMonth().equals(start.format(formatter))).findFirst();
+            Optional<Budget> budget = getBudget(start);
 
             if (budget.isPresent()) {
                 return budget.get().getAmount() / start.lengthOfMonth();
@@ -71,5 +68,12 @@ public class BudgetService {
         }
         YearMonth from = YearMonth.from(start);
         return YearMonth.from(end).minusMonths(from.getMonthValue()).getMonthValue();
+    }
+
+    private Optional<Budget> getBudget(LocalDate currentDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMM");
+        return budgetRepo.getAll()
+                .stream()
+                .filter(b -> b.getYearMonth().equals(currentDate.format(formatter))).findFirst();
     }
 }
