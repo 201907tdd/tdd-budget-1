@@ -3,7 +3,6 @@ package accountant;
 import accountant.vo.Budget;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
@@ -40,7 +39,7 @@ public class BudgetService {
                 if (currentBudget.isPresent()) {
                     Budget budget = currentBudget.get();
 
-                    totalAmount += budget.dailyAmount() * getOverlappingDays(start, end, budget);
+                    totalAmount += budget.dailyAmount() * getOverlappingDays(new Period(start, end), budget);
                 }
                 currentDate = currentDate.plusMonths(1);
             }
@@ -77,13 +76,13 @@ public class BudgetService {
                 .filter(b -> b.getYearMonth().equals(currentDate.format(formatter))).findFirst();
     }
 
-    private long getOverlappingDays(LocalDate start, LocalDate end, Budget budget) {
+    private long getOverlappingDays(Period period, Budget budget) {
         long dayCount;
-        if (YearMonth.from(budget.firstDay()).equals(YearMonth.from(start))) {
-            dayCount = dayCount(start, budget.lastDay());
+        if (YearMonth.from(budget.firstDay()).equals(YearMonth.from(period.getStart()))) {
+            dayCount = dayCount(period.getStart(), budget.lastDay());
         }
-        else if (YearMonth.from(budget.lastDay()).equals(YearMonth.from(end))) {
-            dayCount = dayCount(budget.firstDay(), end);
+        else if (YearMonth.from(budget.lastDay()).equals(YearMonth.from(period.getEnd()))) {
+            dayCount = dayCount(budget.firstDay(), period.getEnd());
         }
         else {
             dayCount = dayCount(budget.firstDay(), budget.lastDay());
