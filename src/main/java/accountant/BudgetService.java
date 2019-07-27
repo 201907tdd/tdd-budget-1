@@ -25,7 +25,8 @@ public class BudgetService {
             Optional<Budget> budget = getBudget(start);
 
             if (budget.isPresent()) {
-                return budget.get().getAmount() / start.lengthOfMonth();
+                return budget.get().getAmount() / budget.get().dayCount();
+//                return budget.get().getAmount() / start.lengthOfMonth();
             }
 
             return 0;
