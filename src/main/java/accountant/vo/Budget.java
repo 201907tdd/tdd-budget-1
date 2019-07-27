@@ -1,5 +1,7 @@
 package accountant.vo;
 
+import accountant.Period;
+
 import java.time.LocalDate;
 import java.time.YearMonth;
 
@@ -37,6 +39,10 @@ public class Budget {
 
     public LocalDate lastDay() {
         return getMonth().atEndOfMonth();
+    }
+
+    public Period getPeriod() {
+        return new Period(firstDay(), lastDay());
     }
 
     private YearMonth getMonth() {
