@@ -21,6 +21,7 @@ public class BudgetService {
             return 0;
         }
 
+        double totalAmount = 0;
         if (diffMonth(start, end) == 0) {
 
             Optional<Budget> budget = getBudget(start);
@@ -28,21 +29,24 @@ public class BudgetService {
             if (budget.isPresent()) {
                 return budget.get().dailyAmount() * diffDay(start, end);
             }
-            return 0;
         }
+        else {
 
-        int diffMonth = diffMonth(start, end);
-        if (diffMonth > 0) {
-            double firstMonthAmount = calculateBudgetAverage(start) * (start.lengthOfMonth() - start.getDayOfMonth() + 1);
-            double lastMonthAmount = calculateBudgetAverage(end) * (end.getDayOfMonth());
+            int diffMonth = diffMonth(start, end);
 
-            double totalAmount = firstMonthAmount + lastMonthAmount;
+            if (diffMonth > 0) {
+                double firstMonthAmount = calculateBudgetAverage(start) * (start.lengthOfMonth() - start.getDayOfMonth() + 1);
+                totalAmount += firstMonthAmount;
 
-            for (int i = 1; i < diffMonth; i++) {
-                LocalDate middle = start.plusMonths(i);
-                totalAmount += calculateBudgetAverage(middle) * middle.lengthOfMonth();
+                double lastMonthAmount = calculateBudgetAverage(end) * (end.getDayOfMonth());
+                totalAmount += lastMonthAmount;
+
+                for (int i = 1; i < diffMonth; i++) {
+                    LocalDate middle = start.plusMonths(i);
+                    totalAmount += calculateBudgetAverage(middle) * middle.lengthOfMonth();
+                }
+                return totalAmount;
             }
-            return totalAmount;
         }
         return 0;
     }
@@ -59,7 +63,6 @@ public class BudgetService {
 
     private long diffDay(LocalDate start, LocalDate end) {
         return DAYS.between(start, end) + 1;
-//        return end.getDayOfMonth() - start.getDayOfMonth() + 1;
     }
 
     private int diffMonth(LocalDate start, LocalDate end) {
